@@ -1,4 +1,4 @@
-const { log } = require('console');
+// const { log } = require('console');
 const fs=require('fs/promises');
 const read=async()=>{
    const data=await  fs.readFile("./data.txt",'utf-8');
