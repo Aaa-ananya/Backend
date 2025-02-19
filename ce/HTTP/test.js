@@ -1,36 +1,32 @@
-const http = require('http');
-const fs = require('fs/promises');
-
+const http=require('http');
+const fs=require("fs/promises");
 const server = http.createServer(async (req, res) => {
-    let filedata;
-    let contentType;
-
-    try {
-        if (req.url == '/') {
-            filedata = await fs.readFile('./aa.json', 'utf-8');
-            contentType = 'application/json';
-            res.writeHead(200, { 'Content-Type': contentType });
-            res.end(filedata);
-        } else if (req.url == '/home') {
-            filedata = await fs.readFile('./home.html', 'utf-8');
-            contentType = 'text/html';
-            res.writeHead(200, { 'Content-Type': contentType });
-            res.end(filedata);
-        } else {
-            filedata = await fs.readFile('./error.html', 'utf-8');
-            contentType = 'text/html';
-            res.writeHead(200, { 'Content-Type': contentType });
-            res.end(filedata);
-        }
-    } catch (error) {
-        filedata = await fs.readFile('./error.html', 'utf-8');
-        contentType = 'text/html';
-        res.writeHead(200, { 'Content-Type': contentType });
-        res.end(filedata);
+    
+    if(req.url == '/'){
+        res.setHeader('Content-Type', 'application/json');
+        let users = await fs.readFile("./aa.json", "utf-8");
+        res.end(JSON.stringify(users));
+    }
+    else if(req.url == '/home'){
+        let page = await home();
+        res.setHeader('Content-Type', 'text/html');
+        res.end(page);
+    }
+    else{
+        let page = await error();
+        res.setHeader('Content-Type', 'text/html');
+        res.end(page);
     }
 });
-
-const PORT = 3000;
-server.listen(PORT, () => {
-    console.log(`Server is running on ${PORT}`);
+async function home(){
+    const data = await fs.readFile("./home.html", "utf-8");
+    return data;
+}
+async function error(){
+    const data = await fs.readFile("./error.html", "utf-8");
+    return data;
+}
+PORT =3000;
+server.listen(PORT,()=>{
+    console.log(`Server is running on port ${PORT}`);
 });
