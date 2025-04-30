@@ -57,5 +57,4 @@ app.delete('/users/:id',(req,res)=>{
 
 app.listen(port,()=>{
     console.log("chl rha hu maii");
-    
 })
